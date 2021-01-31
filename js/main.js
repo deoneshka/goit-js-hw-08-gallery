@@ -63,9 +63,6 @@ createGalleryItems();
 
 const modalRef = document.querySelector('.lightbox');
 const modalImageRef = document.querySelector('.lightbox__image');
-const imagesRef = document.querySelectorAll('.gallery__image');
-
-console.log(imagesRef);
 
 function keyboardСontrolModal() {
     window.addEventListener('keydown', event => {
