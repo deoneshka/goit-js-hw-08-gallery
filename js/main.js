@@ -37,6 +37,8 @@
 import galleryItemsList from "./gallery-items.js";
 
 const galleryRef = document.querySelector('.gallery');
+const modalRef = document.querySelector('.lightbox');
+const modalImageRef = document.querySelector('.lightbox__image');
 
 function createGalleryItems() {
     galleryItemsList.forEach(item => {
@@ -59,21 +61,16 @@ function createGalleryItems() {
     });
 };
 
-createGalleryItems();
-
-const modalRef = document.querySelector('.lightbox');
-const modalImageRef = document.querySelector('.lightbox__image');
-
-function keyboardСontrolModal() {
-    window.addEventListener('keydown', event => {
-        if (event.code === 'Escape') {
-            modalRef.classList.remove('is-open');
-            modalImageRef.src = '';
-        };
-    });
+const keyboardСontrolModal = event => {
+    event.preventDefault();
+    
+    if (event.code === 'Escape') {
+        modalRef.classList.remove('is-open');
+        modalImageRef.src = '';
+    };
 };
 
-galleryRef.addEventListener('click', event => {
+const openModal = event => {
     event.preventDefault();
 
     if (!event.target.classList.contains('gallery__image')) return;
@@ -82,17 +79,22 @@ galleryRef.addEventListener('click', event => {
     modalImageRef.alt = event.target.alt;
     modalRef.classList.add('is-open');
 
-    keyboardСontrolModal(modalImageRef);
-});
+    window.addEventListener('keydown', keyboardСontrolModal);
+};
 
-modalRef.addEventListener('click', event => {
+const closeModal = event => {
     // закрытие только кликом по кнопке
     // if (!event.target.classList.contains('lightbox__button')) return;
     // modalRef.classList.remove('is-open');
     // modalImageRef.src = '';
 
     if (event.target.classList.contains('lightbox__image')) return;
-
     modalRef.classList.remove('is-open');
     modalImageRef.src = '';
-});
+
+    window.removeEventListener('keydown', keyboardСontrolModal);
+};
+
+createGalleryItems();
+galleryRef.addEventListener('click', openModal);
+modalRef.addEventListener('click', closeModal);
