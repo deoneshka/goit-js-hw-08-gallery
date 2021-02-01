@@ -40,26 +40,31 @@ const galleryRef = document.querySelector('.gallery');
 const modalRef = document.querySelector('.lightbox');
 const modalImageRef = document.querySelector('.lightbox__image');
 
+
 function createGalleryItems() {
     galleryItemsList.forEach(item => {
-        const galleryItemRef = document.createElement('li');
-        galleryItemRef.classList.add('gallery__item');
+        const galleryItem = document.createElement('li');
+        galleryItem.classList.add('gallery__item');
 
-        const linkRef = document.createElement('a');
-        linkRef.classList.add('gallery__link');
-        linkRef.setAttribute('href', `${item.original}`);
-        galleryItemRef.append(linkRef);
+        const link = document.createElement('a');
+        link.classList.add('gallery__link');
+        link.setAttribute('href', `${item.original}`);
+        galleryItem.append(link);
 
-        const imageRef = document.createElement('img');
-        imageRef.classList.add('gallery__image');
-        imageRef.setAttribute('src', `${item.preview}`);
-        imageRef.setAttribute('data-source', `${item.original}`);
-        imageRef.setAttribute('alt', `${item.description}`);
-        linkRef.append(imageRef);
+        const image = document.createElement('img');
+        image.classList.add('gallery__image');
+        image.setAttribute('src', `${item.preview}`);
+        image.setAttribute('data-source', `${item.original}`);
+        image.setAttribute('alt', `${item.description}`);
+        link.append(image);
 
-        return galleryRef.append(galleryItemRef);
+        return galleryRef.append(galleryItem);
     });
 };
+
+createGalleryItems();
+
+const imagesRef = document.querySelectorAll('.gallery__image');
 
 const openModal = event => {
     event.preventDefault();
@@ -69,8 +74,8 @@ const openModal = event => {
     modalImageRef.src = event.target.dataset.source;
     modalImageRef.alt = event.target.alt;
     modalRef.classList.add('is-open');
-
-    window.addEventListener('keydown', keyboardСontrolModal);
+    window.addEventListener('keydown', closeModalbyKeyboard);
+    window.addEventListener('keydown', switchImageByKeyboard);
 };
 
 const closeModalbyClick = event => {
@@ -82,19 +87,45 @@ const closeModalbyClick = event => {
     if (event.target.classList.contains('lightbox__image')) return;
     modalRef.classList.remove('is-open');
     modalImageRef.src = '';
-    window.removeEventListener('keydown', keyboardСontrolModal);;
+    window.removeEventListener('keydown', closeModalbyKeyboard);
+    window.removeEventListener('keydown', switchImageByKeyboard);
 };
 
-const keyboardСontrolModal = event => {
+const closeModalbyKeyboard = event => {
     event.preventDefault();
     
     if (event.code === 'Escape') {
         modalRef.classList.remove('is-open');
         modalImageRef.src = '';
-        window.removeEventListener('keydown', keyboardСontrolModal);;
+        window.removeEventListener('keydown', closeModalbyKeyboard);
+        window.removeEventListener('keydown', switchImageByKeyboard);
     };
 };
 
-createGalleryItems();
+const switchImageByKeyboard = event => {
+    event.preventDefault();
+
+    const arrayImagesSrc = [];
+    imagesRef.forEach(image => {
+        arrayImagesSrc.push(image.dataset.source);
+    });
+
+    let currentIndex = arrayImagesSrc.indexOf(modalImageRef.src);
+    
+    if (event.code === 'ArrowLeft') {
+        currentIndex -= 1;
+        if (currentIndex >= 0) {
+            modalImageRef.src = arrayImagesSrc[currentIndex];
+        };
+    };
+    
+    if (event.code === 'ArrowRight') {
+        currentIndex += 1;
+        if (currentIndex < arrayImagesSrc.length) {
+            modalImageRef.src = arrayImagesSrc[currentIndex];
+        };
+    };
+};
+
 galleryRef.addEventListener('click', openModal);
 modalRef.addEventListener('click', closeModalbyClick);
