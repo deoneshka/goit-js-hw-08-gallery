@@ -61,15 +61,6 @@ function createGalleryItems() {
     });
 };
 
-const keyboardСontrolModal = event => {
-    event.preventDefault();
-    
-    if (event.code === 'Escape') {
-        modalRef.classList.remove('is-open');
-        modalImageRef.src = '';
-    };
-};
-
 const openModal = event => {
     event.preventDefault();
 
@@ -91,8 +82,18 @@ const closeModal = event => {
     if (event.target.classList.contains('lightbox__image')) return;
     modalRef.classList.remove('is-open');
     modalImageRef.src = '';
+    window.removeEventListener('keydown', keyboardСontrolModal);;
+};
 
-    window.removeEventListener('keydown', keyboardСontrolModal);
+const keyboardСontrolModal = event => {
+    console.log('ghbdtn');
+    event.preventDefault();
+    
+    if (event.code === 'Escape') {
+        modalRef.classList.remove('is-open');
+        modalImageRef.src = '';
+        window.removeEventListener('keydown', keyboardСontrolModal);;
+    };
 };
 
 createGalleryItems();
