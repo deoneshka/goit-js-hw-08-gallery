@@ -73,7 +73,7 @@ const openModal = event => {
     window.addEventListener('keydown', keyboardСontrolModal);
 };
 
-const closeModal = event => {
+const closeModalbyClick = event => {
     // закрытие только кликом по кнопке
     // if (!event.target.classList.contains('lightbox__button')) return;
     // modalRef.classList.remove('is-open');
@@ -86,7 +86,6 @@ const closeModal = event => {
 };
 
 const keyboardСontrolModal = event => {
-    console.log('ghbdtn');
     event.preventDefault();
     
     if (event.code === 'Escape') {
@@ -98,4 +97,4 @@ const keyboardСontrolModal = event => {
 
 createGalleryItems();
 galleryRef.addEventListener('click', openModal);
-modalRef.addEventListener('click', closeModal);
+modalRef.addEventListener('click', closeModalbyClick);
