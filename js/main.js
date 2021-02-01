@@ -110,19 +110,31 @@ const switchImageByKeyboard = event => {
         arrayImagesSrc.push(image.dataset.source);
     });
 
+    const arrayImagesAlt = [];
+    imagesRef.forEach(image => {
+        arrayImagesAlt.push(image.alt);
+    });
+
     let currentIndex = arrayImagesSrc.indexOf(modalImageRef.src);
-    
+    let currentAltIndex = arrayImagesAlt.indexOf(modalImageRef.alt);
+
     if (event.code === 'ArrowLeft') {
         currentIndex -= 1;
+        currentAltIndex -= 1;
+
         if (currentIndex >= 0) {
             modalImageRef.src = arrayImagesSrc[currentIndex];
+            modalImageRef.alt = arrayImagesAlt[currentAltIndex];
         };
     };
     
     if (event.code === 'ArrowRight') {
         currentIndex += 1;
+        currentAltIndex += 1;
+
         if (currentIndex < arrayImagesSrc.length) {
             modalImageRef.src = arrayImagesSrc[currentIndex];
+            modalImageRef.alt = arrayImagesAlt[currentAltIndex];
         };
     };
 };
