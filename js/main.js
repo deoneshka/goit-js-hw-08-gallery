@@ -86,6 +86,7 @@ const closeModalbyClick = event => {
 
     if (event.target.classList.contains('lightbox__image')) return;
     modalRef.classList.remove('is-open');
+    modalImageRef.alt = '';
     modalImageRef.src = '';
     window.removeEventListener('keydown', closeModalbyKeyboard);
     window.removeEventListener('keydown', switchImageByKeyboard);
@@ -96,6 +97,7 @@ const closeModalbyKeyboard = event => {
     
     if (event.code === 'Escape') {
         modalRef.classList.remove('is-open');
+        modalImageRef.alt = '';
         modalImageRef.src = '';
         window.removeEventListener('keydown', closeModalbyKeyboard);
         window.removeEventListener('keydown', switchImageByKeyboard);
